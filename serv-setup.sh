@@ -15,13 +15,13 @@
 #    or pip3 are missing and warns if verilator is not installed. It provides
 #    instructions on how to install the missing packages on Ubuntu.
 # 2. Installs fusesoc (using pip3) if it is not installed.
-# 3. Appends to PATH the folder where fusesoc is installed () ~/.local/bin).
+# 3. Appends to PATH the folder where fusesoc is installed (~/.local/bin).
 # 4. Creates workspace. If the workspace exists then it is moved (backed up)
 #    to $WORKSPACE-$DATE.
 # 5. Defines environement variables WORKSPACE and SERV
-# 6. Runs fusesoc the clone fusesoc-cores and serv.
+# 6. Runs fusesoc to clone fusesoc-cores and serv.
 # 7. Creates aliases to simulate the pre-compiled examples. The aliases are:
-#      run_hello, run_hello_mt, run_phil, run_sync, run_blinky
+#      run_hello, run_hello_mt, run_phil, run_sync and run_blinky
 # 8. Prints a brief description of how to run the simulations.
 #
 # ===========================================================================
