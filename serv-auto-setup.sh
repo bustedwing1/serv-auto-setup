@@ -70,22 +70,24 @@ fusesoc library add fusesoc-cores https://github.com/fusesoc/fusesoc-cores
 fusesoc library add serv https://github.com/olofk/serv
 #fusesoc library add subservient https://github.com/olofk/subservient
 fusesoc core show serv
+fusesoc run --target=lint serv
 
 echo "Success!"
 echo "SERV and SUBSERVIENT are installed and ready for simulation"
 echo "To run simulation:"
-echo "  fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384"
+echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello.hex"
 echo "  fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/zephyr_hello.hex --memsize=16384"
 echo "  fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384"
-echo "  fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/zephyr_phil.hex --memsize=16384"
-echo "  fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384"
-echo "You can also use aliases: run_blinky, run_hello, run_hello_mt, run_phil, run_sync"
+echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768"
+echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384"
+echo "  fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384"
+echo "You can also use aliases: run_hello, run_hello_mt, run_phil, run_sync, run_blinky"
 echo
+alias run_hello='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello.hex'
+alias run_hello_mt='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello_mt.hex'
+alias run_phil='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768'
+alias run_sync='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384'
 alias run_blinky='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384'
-alias run_hello='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/zephyr_hello.hex --memsize=16384'
-alias run_hello_mt='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384'
-alias run_phil='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/zephyr_phil.hex --memsize=16384'
-alias run_sync='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384'
 
 fi # endif not err
 
