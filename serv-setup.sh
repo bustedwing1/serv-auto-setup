@@ -108,7 +108,7 @@ alias run_blinky='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/
 
 echo
 echo "Success!"
-echo "SERV and SUBSERVIENT are installed and ready for simulation"
+echo "SERV is installed and ready for simulation"
 echo "To run simulation:"
 echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello.hex"
 echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384"
