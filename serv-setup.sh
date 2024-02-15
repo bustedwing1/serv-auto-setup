@@ -27,65 +27,65 @@
 # ===========================================================================
 
 # Check if python3, pip3 and verilator are installed
-MISSING_PACKAGES=""
+missing_packages=""
 
-ERR=0
-PYTHON3=`which python3`
-if [[ "$PYTHON3" = "" ]]; then
+err_required_packages_are_missing=false
+python3=`which python3`
+if [[ "$python3" = "" ]]; then
   echo "Error: Python3 not found"
-  ERR=1
-  MISSING_PACKAGES="$MISSING_PACKAGES PYTHON3"
+  err_required_packages_are_missing=true
+  missing_packages="$missing_packages python3"
 fi
 
-PIP3=`which pip3`
-if [[ "$PIP3" = "" ]]; then
+pip3=`which pip3`
+if [[ "$pip3" = "" ]]; then
   echo "Error: Pip3 not found"
-  ERR=2
-  MISSING_PACKAGES="$MISSING_PACKAGES PIP3"
+  err_required_packages_are_missing=true
+  missing_packages="$missing_packages pip3"
 fi
 
-VERILATOR=`which verilator`
-if [[ "$VERILATOR" = "" ]]; then
+verilator=`which verilator`
+if [[ "$verilator" = "" ]]; then
   echo "Warning: Verilator not found"
-  MISSING_PACKAGES="$MISSING_PACKAGES verilator"
+  missing_packages="$missing_packages verilator"
 fi
 
-if [[ "$MISSING_PACKAGES" != "" ]]; then
+if [[ "$missing_packages" != "" ]]; then
   echo "To install missing packages on Ubuntu:"
-  echo "  sudo apt-get update> sudo apt-get install$MISSING_PACKAGES"
+  echo "  sudo apt-get update> sudo apt-get install$missing_packages"
 fi
 
 
 # ----------------------------------------------------------------
 
-if [[ $ERR -eq 0 ]]; then
+if [[ $err_required_packages_are_missing -eq 0 ]]; then
 
 # Append '.local/bin' to the path
 PATH="$PATH:$HOME/.local/bin"
 
 # Install fusesoc if not installed
-FUSESOC=`which fusesoc`
-if [[ "$FUSESOC" = "" ]]; then
+fusesoc=`which fusesoc`
+if [[ "$fusesoc" = "" ]]; then
   echo "Warning: fusesoc not found. Pip3 is installing it to '$HOME/.local/bin'"
   pip3 install fusesoc
 fi
 
 # Create SERV environement variables
-WS="workspace"
+ws="workspace"
 if [[ "$1" != "" ]]; then
-  WS="$1"
+  ws="$1"
 fi
-PWD=$(pwd)
-export WORKSPACE="$PWD/$WS"
+pwd=$(pwd)
+export WORKSPACE="$pwd/$ws"
 export SERV=$WORKSPACE/fusesoc_libraries/serv
 export SUBSERVIENT=$WORKSPACE/fusesoc_libraries/subservient
 
 # Save old workspace if it exists
 if [[ -d $WORKSPACE ]]; then
-  NOW=$(date +"%Y_%m_%d-%H_%M_%S")
-  BACKUP_DIR="$WORKSPACE-$NOW"
-  echo "Saving old workspace '$WORKSPACE' to '$BACKUP_DIR'"
-  mv $WORKSPACE $BACKUP_DIR
+  now=$(date +"%Y_%m_%d-%H_%M_%S")
+  backup_dir="$WORKSPACE-$now"
+  echo "Saving old workspace '$WORKSPACE' to '$backup_dir'"
+  mv $WORKSPACE $backup_dir
 fi
 
 # Created workspace and go into it
@@ -106,6 +106,7 @@ alias run_phil='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 
 alias run_sync='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384'
 alias run_blinky='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384'
 
+echo
 echo "Success!"
 echo "SERV and SUBSERVIENT are installed and ready for simulation"
 echo "To run simulation:"
