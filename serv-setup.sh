@@ -27,32 +27,32 @@
 # ===========================================================================
 
 # Check if python3, pip3 and verilator are installed
-install_list=""
+MISSING_PACKAGES=""
 
 ERR=0
-python3=`which python3`
-if [[ "$python3" = "" ]]; then
+PYTHON3=`which python3`
+if [[ "$PYTHON3" = "" ]]; then
   echo "Error: Python3 not found"
   ERR=1
-  install_list="$install_list python3"
+  MISSING_PACKAGES="$MISSING_PACKAGES PYTHON3"
 fi
 
-pip3=`which pip3`
-if [[ "$pip3" = "" ]]; then
+PIP3=`which pip3`
+if [[ "$PIP3" = "" ]]; then
   echo "Error: Pip3 not found"
   ERR=2
-  install_list="$install_list pip3"
+  MISSING_PACKAGES="$MISSING_PACKAGES PIP3"
 fi
 
-verilator=`which verilator`
-if [[ "$verilator" = "" ]]; then
+VERILATOR=`which verilator`
+if [[ "$VERILATOR" = "" ]]; then
   echo "Warning: Verilator not found"
-  install_list="$install_list verilator"
+  MISSING_PACKAGES="$MISSING_PACKAGES verilator"
 fi
 
-if [[ "$install_list" != "" ]]; then
+if [[ "$MISSING_PACKAGES" != "" ]]; then
   echo "To install missing packages on Ubuntu:"
-  echo "  sudo apt-get update> sudo apt-get install$install_list"
+  echo "  sudo apt-get update> sudo apt-get install$MISSING_PACKAGES"
 fi
 
 
@@ -64,8 +64,8 @@ if [[ $ERR -eq 0 ]]; then
 PATH="$PATH:$HOME/.local/bin"
 
 # Install fusesoc if not installed
-fusesoc=`which fusesoc`
-if [[ "$fusesoc" = "" ]]; then
+FUSESOC=`which fusesoc`
+if [[ "$FUSESOC" = "" ]]; then
   echo "Warning: fusesoc not found. Pip3 is installing it to '$HOME/.local/bin'"
   pip3 install fusesoc
 fi
@@ -83,9 +83,9 @@ export SUBSERVIENT=$WORKSPACE/fusesoc_libraries/subservient
 # Save old workspace if it exists
 if [[ -d $WORKSPACE ]]; then
   NOW=$(date +"%Y_%m_%d-%H_%M_%S")
-  SAVE_DIR="$WORKSPACE-$NOW"
-  echo "Saving old workspace '$WORKSPACE' to '$SAVE_DIR'"
-  mv $WORKSPACE $SAVE_DIR
+  BACKUP_DIR="$WORKSPACE-$NOW"
+  echo "Saving old workspace '$WORKSPACE' to '$BACKUP_DIR'"
+  mv $WORKSPACE $BACKUP_DIR
 fi
 
 # Created workspace and go into it
@@ -99,6 +99,13 @@ fusesoc library add serv https://github.com/olofk/serv
 fusesoc core show serv
 fusesoc run --target=lint serv
 
+# Create aliases to run the pre-compile tests
+alias run_hello='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello.hex'
+alias run_hello_mt='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384'
+alias run_phil='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768'
+alias run_sync='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384'
+alias run_blinky='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384'
+
 echo "Success!"
 echo "SERV and SUBSERVIENT are installed and ready for simulation"
 echo "To run simulation:"
@@ -109,11 +116,6 @@ echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmwa
 echo "  fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384"
 echo "You can also use aliases: run_hello, run_hello_mt, run_phil, run_sync, run_blinky"
 echo
-alias run_hello='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello.hex'
-alias run_hello_mt='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384'
-alias run_phil='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768'
-alias run_sync='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384'
-alias run_blinky='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384'
 
 fi # endif not err
 
