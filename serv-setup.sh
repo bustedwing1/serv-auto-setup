@@ -26,28 +26,34 @@
 #
 # ===========================================================================
 
-# Check if python3, pip3 and verilator are installed
+# Check if python3, pip3, verilator and iverilog are installed
 missing_packages=""
 
 err_required_packages_are_missing=false
-python3=`which python3`
-if [[ "$python3" = "" ]]; then
+python3_is_installed=`which python3`
+if [[ "$python3_is_installed" = "" ]]; then
   echo "Error: Python3 not found"
   err_required_packages_are_missing=true
   missing_packages="$missing_packages python3"
 fi
 
-pip3=`which pip3`
-if [[ "$pip3" = "" ]]; then
+pip3_is_installed=`which pip3`
+if [[ "$pip3_is_installed" = "" ]]; then
   echo "Error: Pip3 not found"
   err_required_packages_are_missing=true
   missing_packages="$missing_packages pip3"
 fi
 
-verilator=`which verilator`
-if [[ "$verilator" = "" ]]; then
+verilator_is_installed=`which verilator`
+if [[ "$verilator_is_installed" = "" ]]; then
   echo "Warning: Verilator not found"
   missing_packages="$missing_packages verilator"
+fi
+
+icarus_is_installed=`which iverilog`
+if [[ "$icarus_is_installed" = "" ]]; then
+  echo "Warning: Icarus Verilog (iverilog) not found"
+  missing_packages="$missing_packages iverilog"
 fi
 
 if [[ "$missing_packages" != "" ]]; then
@@ -100,23 +106,36 @@ fusesoc core show serv
 fusesoc run --target=lint serv
 
 # Create aliases to run the pre-compile tests
-alias run_hello='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello.hex'
-alias run_hello_mt='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384'
-alias run_phil='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768'
-alias run_sync='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384'
-alias run_blinky='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384'
 
 echo
 echo "Success!"
 echo "SERV is installed and ready for simulation"
-echo "To run simulation:"
+echo "To run simulations with Verilator"
 echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello.hex"
 echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384"
 echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768"
 echo "  fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384"
 echo "  fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384"
-echo "You can also use aliases: run_hello, run_hello_mt, run_phil, run_sync, run_blinky"
+echo "You can also use aliases: verilator_hello, verilator_hello_mt, verilator_phil, verilator_sync, verilator_blinky"
+alias verilator_hello='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello.hex'
+alias verilator_hello_mt='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384'
+alias verilator_phil='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768'
+alias verilator_sync='fusesoc run --target=verilator_tb servant --uart_baudrate=57600 --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384'
+alias verilator_blinky='fusesoc run --target=verilator_tb servant --firmware=$SERV/sw/blinky.hex --memsize=16384'
+
 echo
+echo "To run simulations with Icarus Verilog (iverilog)"
+echo "  fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/zephyr_hello.hex"
+echo "  fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384"
+echo "  fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768"
+echo "  fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384"
+echo "  fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/blinky.hex --memsize=16384"
+echo "You can also use aliases: run_hello, run_hello_mt, run_phil, run_sync, run_blinky"
+alias iverilog_hello='fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/zephyr_hello.hex'
+alias iverilog_hello_mt='fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/zephyr_hello_mt.hex --memsize=16384'
+alias iverilog_phil='fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/zephyr_phil.hex --memsize=32768'
+alias iverilog_sync='fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/zephyr_sync.hex --memsize=16384'
+alias iverilog_blinky='fusesoc run --target=sim --tool=icarus servant --firmware=$SERV/sw/blinky.hex --memsize=16384'
 
 fi # endif not err
 
