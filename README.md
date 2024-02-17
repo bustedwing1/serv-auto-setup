@@ -37,3 +37,26 @@ The serv-setup.sh script does the following:
      ```iverilog_hello```, ```iverilog_hello_mt```, ```iverilog_phil```, ```iverilog_sync``` and ```iverilog_blinky```
 8. Prints a brief description of how to run the simulations.
 
+
+Additional Notes
+----------------
+
+The following generates blinky.hex from the blinky.S assembly language program
+
+```
+cd $SERV/sw
+make blinky.hex
+```
+
+or
+
+```
+cd $SERV/sw
+/opt/riscv/bin/riscv32-unknown-linux-gnu-gcc -nostartfiles -nostdlib -march=rv32i -mabi=ilp32 -Tlink.ld -oblinky.elf blinky.S
+/opt/riscv/bin/riscv32-unknown-linux-gnu-objcopy -O binary blinky.elf blinky.bin
+python3 makehex.py blinky.bin > blinky.hex
+fusesoc run --target=verilator_tb servant --firmware=blinky.hex --memsize=16384
+```
+
+
+  
