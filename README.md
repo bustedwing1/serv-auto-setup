@@ -59,4 +59,20 @@ fusesoc run --target=verilator_tb servant --firmware=blinky.hex --memsize=16384
 ```
 
 
-  
+Install Tool Chain
+------------------
+
+```bash
+sudo apt-get install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev \
+	libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils \
+	bc zlib1g-dev libexpat-dev
+git clone https://github.com/riscv/riscv-gnu-toolchain
+cd riscv-gnu-toolchain
+mkdir ~/riscv-gnu-toolchain
+./configure --prefix=~/riscv-gnu-toolchain/rv32i --with-arch=rv32i --with-abi=ilp32
+make
+echo "To add the toolchain to your path:"
+echo "  export PATH=$PATH:~/riscv-gnu-toolchain/rv32i/bin"
+``` 
+
+
