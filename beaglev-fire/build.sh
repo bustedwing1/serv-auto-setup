@@ -10,7 +10,8 @@ cp ../beaglev-fire/CAPE.v ../../sources/FPGA-design/script_support/components/CA
 sed -i 's#zephyr_hello.hex#../../blinky.hex#' fusesoc_libraries/serv/servant/servant.v
 sed -i 's#`default_nettype#// `default_nettype#' $(find fusesoc_libraries/serv -name '*.v')
 rm -rf build
-verilator_blinky --timeout 1000
+
+fusesoc run --target=verilator_tb servant --memsize=8192 --timeout 1000
 
 cp -rf build/servant_1.2.1/verilator_tb/src/serv_1.2.1 ../../sources/FPGA-design/script_support/components/CAPE/MY_SERV_CAPE/HDL
 cp -rf build/servant_1.2.1/verilator_tb/src/servant_1.2.1 ../../sources/FPGA-design/script_support/components/CAPE/MY_SERV_CAPE/HDL
