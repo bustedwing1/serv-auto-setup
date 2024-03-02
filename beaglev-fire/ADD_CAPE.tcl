@@ -1,4 +1,4 @@
-puts "======== Add cape option: VERILOG_TEMPLATE ========"
+puts "======== Add cape option: MY_SERV_CAPE ========"
 
 #-------------------------------------------------------------------------------
 # Import HDL source files
