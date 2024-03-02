@@ -1,6 +1,6 @@
 ## Run this script from SERV's workspace
 
-sed -i 's/VERILOG_TEMPLATE/MY_SERV_CAPE/g' ../../custom-fpga-design/my_custom_fpga_design.yaml
+sed -i 's/VERILOG_TUTORIAL/MY_SERV_CAPE/g' ../../custom-fpga-design/my_custom_fpga_design.yaml
 rm -rf ../../sources/FPGA-design/script_support/components/CAPE/MY_SERV_CAPE
 cp -rf ../../sources/FPGA-design/script_support/components/CAPE/VERILOG_TEMPLATE ../../sources/FPGA-design/script_support/components/CAPE/MY_SERV_CAPE
 cp ../beaglev-fire/ADD_CAPE.tcl  ../../sources/FPGA-design/script_support/components/CAPE/MY_SERV_CAPE/ADD_CAPE.tcl
