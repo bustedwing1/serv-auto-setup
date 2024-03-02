@@ -4,7 +4,6 @@ puts "======== Add cape option: MY_SERV_CAPE ========"
 # Import HDL source files
 #-------------------------------------------------------------------------------
 import_files -hdl_source {script_support/components/CAPE/MY_SERV_CAPE/HDL/apb_ctrl_status.v}
-import_files -hdl_source {script_support/components/CAPE/MY_SERV_CAPE/HDL/blinky.v}
 import_files -hdl_source {script_support/components/CAPE/MY_SERV_CAPE/HDL/P8_IOPADS.v}
 import_files -hdl_source {script_support/components/CAPE/MY_SERV_CAPE/HDL/P9_11_18_IOPADS.v}
 import_files -hdl_source {script_support/components/CAPE/MY_SERV_CAPE/HDL/P9_21_31_IOPADS.v}
